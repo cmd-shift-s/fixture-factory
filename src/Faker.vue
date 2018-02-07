@@ -43,7 +43,7 @@
         <div class="field">
           <label class="label">Result</label>
           <div class="control">
-            <textarea class="textarea" readonly>{{result}}</textarea>
+            <textarea class="textarea">{{result}}</textarea>
           </div>
         </div>
       </form>
