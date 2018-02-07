@@ -35,7 +35,7 @@
           <li>Result: ipsum</li>
         </ul>
         <p>거기에 몇가지 동작을 추가해 보았습니다.</p>
-        <h5 v-text="`* {{fake}}:number`"></h5>
+        <h5><b v-text="`{{fake}}:number`"></b></h5>
         <p>계속 랜덤이 아닌 위에서 지정한 개수만큼 랜덤을 만들고 그 리스트로 다시 랜덤을 돌리는 방식입니다.</p>
         <p>Example:</p>
         <ul>
