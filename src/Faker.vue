@@ -10,18 +10,18 @@
                 <select v-model="type">
                   <option value="num_random">Number Random</option>
                   <option value="number">Number</option>
-                  <option value="string">String</option>
+                  <option value="fake">Fake</option>
                 </select>
               </div>
             </div>
           </div>
-          <div class="field" v-if="isNumRandom || isString">
+          <div class="field" v-if="isNumRandom || isFake">
             <label class="label">Count</label>
             <div class="control">
               <input type="number" class="input" v-model="count" required>
             </div>
           </div>
-          <div class="field" v-if="isNumRandom || isString">
+          <div class="field" v-if="isNumRandom || isFake">
             <label class="label">Delimiter</label>
             <div class="control">
               <input type="text" class="input" v-model="delimiter" required>
@@ -66,7 +66,7 @@ export default {
   computed: {
     isNumRandom() { return this.type === 'num_random' },
     isNumber() { return this.type === 'number' },
-    isString() { return this.type === 'string' }
+    isFake() { return this.type === 'fake' }
   },
   methods: {
     generate() {
@@ -75,7 +75,7 @@ export default {
         return
       }
 
-      if (this.isString) {
+      if (this.isFake) {
         this.result = faker.fakeQuery(this.query, this.count).join(this.delimiter)
       } else {
         let [min, max] = this.query.split(',').map(s => parseInt(s, 10))
