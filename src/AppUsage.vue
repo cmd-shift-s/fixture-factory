@@ -23,11 +23,11 @@
           <li>Query: number[, number]</li>
           <li>number를 하나만 입력할 경우 음수와 양수 모두 0부터 시작합니다.</li>
         </ul>
-        <h4>String</h4>
+        <h4>Fake</h4>
         <p>입력한 포멧에 맞춰서 표현해 줍니다. 자세한 사항은 다음 Query Tab에서 확인해 주세요.</p>
 
         <h2>Query</h2>
-        <p>Type이 String일 경우의 설명입니다.</p>
+        <p>Type이 Fake일 경우의 설명입니다.</p>
         <p>기본적으로 <a target="_blank" href="https://github.com/marak/Faker.js/#fakerfake">faker.fake</a>함수를 기반으로 동작합니다.</p>
         <p>Example:</p>
         <ul>

@@ -28,13 +28,13 @@ Open https://gongzza.github.io/fixture-factory
 - Query: number[, number]
 - number를 하나만 입력할 경우 음수와 양수 모두 0부터 시작합니다.
 
-#### String
+#### Fake
 
 입력한 포멧에 맞춰서 표현해 줍니다. 자세한 사항은 다음 Query Tab에서 확인해 주세요.
 
 ### Query
 
-Type이 String일 경우의 설명입니다.
+Type이 Fake일 경우의 설명입니다.
 
 기본적으로 [faker.fake](https://github.com/marak/Faker.js/#fakerfake)함수를 기반으로 동작합니다.
 
