@@ -59,6 +59,14 @@ Example:
 - Count: 10
 - Result: aperiam.jpeg, natus.png, sunt.png, qui.png, aut.gif, quae.gif, in.gif, ut.gif, et.png, dolorum.gif
 
+**{{fake}}:date(format)**
+
+날짜를 형식에 맞춰서 출력하는 기능입니다.
+
+Example:
+- Query: {{date.past}}:date(YYYY-MM-DD a hh:mm:ss Z)
+- Result: 2017-11-05 am 01:48:26 +09:00, 2017-09-14 pm 10:45:40 +09:00, 2018-01-29 am 06:48:18 +09:00
+
 ### Others
 
 Count와 Delimiter는 표시되면 필수로 입력해야 합니다.
