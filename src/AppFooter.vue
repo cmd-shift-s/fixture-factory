@@ -8,13 +8,16 @@
         <p><b>Made with:</b></p>
         <p>
           <a href="https://kr.vuejs.org/">
-            <img src="https://kr.vuejs.org/images/logo.png" alt="Vue.js" width="48">
+            <span class="tag">Vue.js</span>
           </a>
           <a href="https://rawgit.com/Marak/faker.js/master/examples/browser/index.html">
-            <img src="https://raw.githubusercontent.com/Marak/faker.js/master/logo.png" alt="faker.js" width="128">
+            <span class="tag">Faker.js</span>
           </a>
           <a href="https://bulma.io">
-            <img src="https://bulma.io/images/bulma-logo.png" alt="Made with Bulma" width="156" height="48">
+            <span class="tag">Bulma</span>
+          </a>
+          <a href="http://momenjs.com">
+            <span class="tag">Moment.js</span>
           </a>
         </p>
       </div>
