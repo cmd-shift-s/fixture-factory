@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import Faker from './Faker.vue'
-import AppUsage from './AppUsage.vue'
-import AppFooter from './AppFooter.vue'
+import Faker from './components/Faker.vue'
+import AppUsage from './layout/AppUsage.vue'
+import AppFooter from './layout/AppFooter.vue'
 
 export default {
   name: 'home',

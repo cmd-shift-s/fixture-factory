@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import * as faker from './faker'
+import * as faker from '@/lib/faker'
 
 export default {
   name: 'faker',
