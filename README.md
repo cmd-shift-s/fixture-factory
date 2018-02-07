@@ -18,14 +18,14 @@ Open https://gongzza.github.io/fixture-factory
 #### Number Random
 숫자를 랜덤하게 표시합니다.
 
-- query: number[, number]
+- Query: number[, number]
 - number를 하나만 입력할 경우 숫자 범위가 양수는 0부터, 음수는 -1부터 입니다.
 
 #### Number
 
 숫자를 순차적으로 표시합니다.
 
-- query: number[, number]
+- Query: number[, number]
 - number를 하나만 입력할 경우 음수와 양수 모두 0부터 시작합니다.
 
 #### String

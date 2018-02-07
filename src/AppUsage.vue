@@ -14,13 +14,13 @@
         <h4>Number Random</h4>
         <p>숫자를 랜덤하게 표시합니다.</p>
         <ul>
-          <li>query: number[, number]</li>
+          <li>Query: number[, number]</li>
           <li>number를 하나만 입력할 경우 숫자 범위가 양수는 0부터, 음수는 -1부터 입니다.</li>
         </ul>
         <h4>Number</h4>
         <p>숫자를 순차적으로 표시합니다.</p>
         <ul>
-          <li>query: number[, number]</li>
+          <li>Query: number[, number]</li>
           <li>number를 하나만 입력할 경우 음수와 양수 모두 0부터 시작합니다.</li>
         </ul>
         <h4>String</h4>
