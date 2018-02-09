@@ -131,7 +131,23 @@ function parseFake(query) {
   const matchers = pluginStr.split('|').slice(1)
   for (const matcher of matchers) {
     const method = /([^\(]+)/.exec(matcher)[1]
-    const params = /\((.*)\)/g.exec(matcher)[1].split(',').map(s => s.trim())
+    const params = /\((.*)\)/g.exec(matcher)[1].split(',').map(str => {
+      // trim과 앞/뒤 \'\" 제거
+      const s = str.trim().replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
+      if (/\d+/.test(s)) {
+        // Number
+        return parseInt(s, 10)
+      } else if (/^\[.*\]$/.test(s)) {
+        // Array
+        return JSON.parse(s)
+      } else if (/^\/(.*?)\/[gimy]*$/.test(s)) {
+        // Regexp
+        var match = s.match(new RegExp('^/(.*?)/([gimy]*)$'));
+        return new RegExp(match[1], match[2]);
+      } else {
+        return s
+      }
+    })
     fn = plugins[method](fn, ...params)
   }
 
