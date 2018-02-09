@@ -57,6 +57,18 @@
           <li v-text="`Query: {{date.past|date(YYYY-MM-DD a hh:mm:ss Z)}}`"></li>
           <li>Result: 2017-11-05 am 01:48:26 +09:00, 2017-09-14 pm 10:45:40 +09:00, 2018-01-29 am 06:48:18 +09:00</li>
         </ul>
+        <h5><b v-text="`{{fake|string methods}}`"></b></h5>
+        <p>String 메소드들을 사용할 수 있습니다.</p>
+        <p>Example:</p>
+        <ul>
+          <li v-text="`Query: {{lorem.word|pick(1)|concat(!!)}}`"></li>
+          <li>Result: ipsum!!, ipsum!!, ipsum!!</li>
+        </ul>
+        <p>Example:</p>
+        <ul>
+          <li v-text="`Query: {{lorem.word|padStart(10, 0)}}`"></li>
+          <li>Result: temporibus, 00000animi, 00delectus</li>
+        </ul>
         <h2>Others</h2>
         Count와 Delimiter는 표시되면 필수로 입력해야 합니다.
         <ul>

@@ -69,6 +69,18 @@ Example:
 - Query: {{date.past|date(YYYY-MM-DD a hh:mm:ss Z)}}
 - Result: 2017-11-05 am 01:48:26 +09:00, 2017-09-14 pm 10:45:40 +09:00, 2018-01-29 am 06:48:18 +09:00
 
+**{{fake|string methods}}**
+
+String 메소드들을 사용할 수 있습니다.
+
+Example:
+- Query: {{lorem.word|pick(1)|concat(!!)}}
+- Result: ipsum!!, ipsum!!, ipsum!!
+
+Example:
+- Query: {{lorem.word|padStart(10, 0)}}
+- Result: temporibus, 00000animi, 00delectus
+
 ### Others
 
 Count와 Delimiter는 표시되면 필수로 입력해야 합니다.
@@ -79,3 +91,7 @@ Count와 Delimiter는 표시되면 필수로 입력해야 합니다.
 ## Contributor
 
 언제나 환영입니다.
+
+## Change Logs
+
+2018-02-09 v0.2.2 - add string methods
