@@ -18,14 +18,14 @@
           <li>number를 하나만 입력할 경우 숫자 범위가 양수는 0부터, 음수는 -1부터 입니다.</li>
         </ul>
         <h4>Number</h4>
-        <p>숫자를 순차적으로 표시합니다.</p>
+        <p>숫자들을 inc값 만큼 차례대로 증가 시키며 표시합니다.</p>
         <ul>
-          <li>Query: number[, number]</li>
+          <li>Query: number[, number [, inc(number)]]</li>
           <li>number를 하나만 입력할 경우 음수와 양수 모두 0부터 시작합니다.</li>
+          <li>inc 기본값은 1 입니다.</li>
         </ul>
         <h4>Fake</h4>
-        <p>입력한 포멧에 맞춰서 표현해 줍니다. 자세한 사항은 다음 Query Tab에서 확인해 주세요.</p>
-
+        <p>입력한 포멧에 맞춰서 표현해 줍니다. 자세한 사항은 다음 Query에서 확인해 주세요.</p>
         <h2>Query</h2>
         <p>Type이 Fake일 경우의 설명입니다.</p>
         <p>기본적으로 <a target="_blank" href="https://github.com/marak/Faker.js/#fakerfake">faker.fake</a>함수를 기반으로 동작합니다.</p>
@@ -34,26 +34,27 @@
           <li v-text="`Query: {{lorem.word}}`"></li>
           <li>Result: ipsum</li>
         </ul>
-        <p>거기에 몇가지 동작을 추가해 보았습니다.</p>
-        <h5><b v-text="`{{fake}}:number`"></b></h5>
+        <h3>Plugins</h3>
+        <p>fake query에 plugin을 붙일 수 있습니다.</p>
+        <h5><b v-text="`{{fake|pick(number)}}`"></b></h5>
         <p>계속 랜덤이 아닌 위에서 지정한 개수만큼 랜덤을 만들고 그 리스트로 다시 랜덤을 돌리는 방식입니다.</p>
         <p>Example:</p>
         <ul>
-          <li v-text="`Query: {{lorem.word}}:1`"></li>
+          <li v-text="`Query: {{lorem.word|pick(1)}}`"></li>
           <li>Count: 3</li>
           <li>Result: ipsum, ipsum, ipsum</li>
         </ul>
         <p>Example:</p>
         <ul>
-          <li v-text="`Query: {{lorem.word}}.{{system.commonFileExt}}:3`"></li>
+          <li v-text="`Query: {{lorem.word}}.{{system.commonFileExt|pick(3)}}`"></li>
           <li>Count: 10</li>
           <li>Result: aperiam.jpeg, natus.png, sunt.png, qui.png, aut.gif, quae.gif, in.gif, ut.gif, et.png, dolorum.gif</li>
         </ul>
-        <h5><b v-text="`{{fake}}:date(format)`"></b></h5>
+        <h5><b v-text="`{{fake|date(format)}}`"></b></h5>
         <p>날짜를 형식에 맞춰서 출력하는 기능입니다.</p>
         <p>Example:</p>
         <ul>
-          <li v-text="`Query: {{date.past}}:date(YYYY-MM-DD a hh:mm:ss Z)`"></li>
+          <li v-text="`Query: {{date.past|date(YYYY-MM-DD a hh:mm:ss Z)}}`"></li>
           <li>Result: 2017-11-05 am 01:48:26 +09:00, 2017-09-14 pm 10:45:40 +09:00, 2018-01-29 am 06:48:18 +09:00</li>
         </ul>
         <h2>Others</h2>

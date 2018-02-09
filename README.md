@@ -43,28 +43,30 @@ Example:
 - Query: {{lorem.word}}
 - Result: ipsum
 
-거기에 몇가지 동작을 추가해 보았습니다.
+### Plugins
 
-**{{fake}}:number**
+fake query에 plugin을 붙일 수 있습니다.
+
+**{{fake|pick(number)}}**
 
 계속 랜덤이 아닌 위에서 지정한 개수만큼 랜덤을 만들고 그 리스트로 다시 랜덤을 돌리는 방식입니다.
 
 Example:
-- Query: {{lorem.word}}:1
+- Query: {{lorem.word|pick(1)}}
 - Count: 3
 - Result: ipsum, ipsum, ipsum
 
 Example:
-- Query: {{lorem.word}}.{{system.commonFileExt}}:3
+- Query: {{lorem.word}}.{{system.commonFileExt|pick(3)}}
 - Count: 10
 - Result: aperiam.jpeg, natus.png, sunt.png, qui.png, aut.gif, quae.gif, in.gif, ut.gif, et.png, dolorum.gif
 
-**{{fake}}:date(format)**
+**{{fake|date(format)}}**
 
 날짜를 형식에 맞춰서 출력하는 기능입니다.
 
 Example:
-- Query: {{date.past}}:date(YYYY-MM-DD a hh:mm:ss Z)
+- Query: {{date.past|date(YYYY-MM-DD a hh:mm:ss Z)}}
 - Result: 2017-11-05 am 01:48:26 +09:00, 2017-09-14 pm 10:45:40 +09:00, 2018-01-29 am 06:48:18 +09:00
 
 ### Others
