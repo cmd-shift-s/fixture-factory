@@ -73,6 +73,8 @@ Example:
 
 String 메소드들을 사용할 수 있습니다.
 
+메소드 목록은 [여기](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String)를 참고하시기 바랍니다.
+
 Example:
 - Query: {{lorem.word|pick(1)|concat(!!)}}
 - Result: ipsum!!, ipsum!!, ipsum!!
@@ -80,6 +82,10 @@ Example:
 Example:
 - Query: {{lorem.word|padStart(10, 0)}}
 - Result: temporibus, 00000animi, 00delectus
+
+Example
+- Query: {{lorem.words|replace(/\s/g, '')}}
+- Result: doloremporroqui, consecteturdolorratione, sitcorruptirerum
 
 ### Others
 
@@ -91,7 +97,3 @@ Count와 Delimiter는 표시되면 필수로 입력해야 합니다.
 ## Contributor
 
 언제나 환영입니다.
-
-## Change Logs
-
-2018-02-09 v0.2.2 - add string methods

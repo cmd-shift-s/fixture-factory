@@ -2,14 +2,14 @@
   <section class="section">
     <div class="container">
       <div class="content">
-        <h1> Usage </h1>
+        <h2> Usage </h2>
         <ol>
           <li><b>Type</b>을 선택하세요.</li>
           <li><b>Query</b>을 입력하세요.(<b>Type</b>에 따라서 입력하는 형식이 달라집니다.)</li>
           <li><b>Query</b>에 포커싱 된 상태로 Enter를 누르거나 <b>Generate</b>버튼을 클릭합니다.</li>
           <li><b>Result</b>를 복사합니다.</li>
         </ol>
-        <h2> Type </h2>
+        <h3> Type </h3>
         <p>선택에 따라서 Query 입력 형식이 달라집니다.</p>
         <h4>Number Random</h4>
         <p>숫자를 랜덤하게 표시합니다.</p>
@@ -26,7 +26,7 @@
         </ul>
         <h4>Fake</h4>
         <p>입력한 포멧에 맞춰서 표현해 줍니다. 자세한 사항은 다음 Query에서 확인해 주세요.</p>
-        <h2>Query</h2>
+        <h3>Query</h3>
         <p>Type이 Fake일 경우의 설명입니다.</p>
         <p>기본적으로 <a target="_blank" href="https://github.com/marak/Faker.js/#fakerfake">faker.fake</a>함수를 기반으로 동작합니다.</p>
         <p>Example:</p>
@@ -59,6 +59,7 @@
         </ul>
         <h5><b v-text="`{{fake|string methods}}`"></b></h5>
         <p>String 메소드들을 사용할 수 있습니다.</p>
+        <p>메소드 목록은 <a target="_blank" href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String">여기</a>를 참고하시기 바랍니다.</p>
         <p>Example:</p>
         <ul>
           <li v-text="`Query: {{lorem.word|pick(1)|concat(!!)}}`"></li>
@@ -69,13 +70,18 @@
           <li v-text="`Query: {{lorem.word|padStart(10, 0)}}`"></li>
           <li>Result: temporibus, 00000animi, 00delectus</li>
         </ul>
-        <h2>Others</h2>
+        <p>Example:</p>
+        <ul>
+          <li v-text="`Query: {{lorem.words|replace(/\s/g, '')}}`"></li>
+          <li>Result: doloremporroqui, consecteturdolorratione, sitcorruptirerum</li>
+        </ul>
+        <h3>Others</h3>
         Count와 Delimiter는 표시되면 필수로 입력해야 합니다.
         <ul>
           <li>Count: 아이템 개수</li>
           <li>Delimiter: 아이템 구분 문자</li>
         </ul>
-        <h1>Contributor</h1>
+        <h2>Contributor</h2>
         <p>언제나 환영입니다.</p>
       </div>
     </div>
