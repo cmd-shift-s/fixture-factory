@@ -53,10 +53,10 @@ export function range(a, b, inc = 1) {
  */
 export function fake(query, cnt) {
 
-  const queries = parseQuery(query)
-  if (!queries) return [query]
+  const result = parseQuery(query)
+  if (!result) return [query]
 
-  return Array.from({length: cnt}, () => queries.map(q => typeof q === 'function'?q():q).join(''))
+  return Array.from({length: cnt}, () => result.map(q => typeof q === 'function'?q():q).join(''))
 }
 
 /**
@@ -75,31 +75,35 @@ function parseQuery(query) {
     return
   }
 
-  const queries = []
+  //
+  const result = []
 
   if (start !== 0) {
     // {{ 로 시작하지 않을 경우
     // 앞 문자열을 저장
-    queries.push(query.substr(0, start))
+    result.push(query.substr(0, start))
   }
+
+  //
+  const fakes = []
 
   while(start !== end) {
     // }} 까지 계산하기 위해서
     end += 2
 
     // fake
-    queries.push(parseFake(query.substring(start, end)))
+    result.push(parseFake(query.substring(start, end)))
 
     start = query.indexOf('{{', end)
     if (start !== -1) {
       // 다음 fake 사이의 문자열 저장
-      queries.push(query.substring(end, start))
+      result.push(query.substring(end, start))
     }
 
     end = query.indexOf('}}', end)
   }
 
-  return queries
+  return result
 }
 
 /**
