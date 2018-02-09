@@ -27,24 +27,6 @@ export function randomNumber(min, max, cnt) {
 }
 
 /**
- * a부터 b 까지 inc 씩 증가 시킨 값들을 리턴한다.
- *
- * @param {number} a
- * @param {number} b
- * @return {Array}
- */
-export function range(a, b, inc = 1) {
-  const [min, max] = utils.minmax(a, b)
-
-  let i = min - inc
-  const length = Math.abs(max - min) + 1
-  const arr = Array.from({length}, () => i += inc)
-
-  if (a > b) arr.reverse()
-  return arr
-}
-
-/**
  * Query를 파싱해서 cnt 개수 만큼의 결과를 배열로 리턴한다.
  *
  * @param {string} query - Fake query
@@ -75,7 +57,7 @@ function parseQuery(query) {
     return
   }
 
-  //
+  // Query 파싱 결과를 저장
   const result = []
 
   if (start !== 0) {
@@ -83,9 +65,6 @@ function parseQuery(query) {
     // 앞 문자열을 저장
     result.push(query.substr(0, start))
   }
-
-  //
-  const fakes = []
 
   while(start !== end) {
     // }} 까지 계산하기 위해서
@@ -122,15 +101,30 @@ function parseFake(query) {
   }
 
   // fake string과 plugin을 분리
-  const pluginStr = query.substring(idx, query.length - 2)
+  const pluginMehotds = query.substring(idx, query.length - 2)
 
   // fake function
-  let fn = () => faker.fake(query.replace(pluginStr, ''))
+  const fakeMethod = query.replace(pluginMehotds, '')
+
+  let fn
+  const fakeStr = fakeMethod.slice(2, -2).trim()
+  if (/^(\'|\").*(\'|\")$/.test(fakeStr)) {
+    // string
+    const str = fakeStr.replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
+    fn = () => str
+  // } else if (/^\[.*\]$/.test(fakeStr)) {
+  //   // array
+  //   const arr = JSON.parse(fakeStr)
+  //   fn = () => arr
+  } else {
+    // fake method
+    fn = () => faker.fake(fakeMethod)
+  }
 
   // 첫번째 문자가 '|' 라서 빈문자열로 된 첫번째 아이템을 버린다.
-  const matchers = pluginStr.split('|').slice(1)
+  const matchers = pluginMehotds.split('|').slice(1)
   for (const matcher of matchers) {
-    const method = /([^\(]+)/.exec(matcher)[1]
+    const method = /([^\(]+)/.exec(matcher)[1].trim()
     const params = /\((.*)\)/g.exec(matcher)[1].split(',').map(str => {
       // trim과 앞/뒤 \'\" 제거
       const s = str.trim().replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
