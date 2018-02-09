@@ -4,7 +4,7 @@
  * https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String
  */
 const methods = [
-  'quote', 'substring', 'toLowerCase', 'toUpperCase', 'charAt',
+  'substring', 'toLowerCase', 'toUpperCase', 'charAt',
   'charCodeAt', 'indexOf', 'lastIndexOf', 'startsWith', 'endsWith',
   'trim', 'trimLeft', 'trimRight', 'toLocaleLowerCase',
   'toLocaleUpperCase', 'localeCompare', 'match', 'search',
