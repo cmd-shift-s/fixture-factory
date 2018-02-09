@@ -59,7 +59,7 @@ export default {
   data: () => ({
     query: '',
     count: 3,
-    type: 'num_random',
+    type: 'fake',
     result: '',
     delimiter: ', '
   }),
@@ -76,9 +76,9 @@ export default {
       }
 
       if (this.isFake) {
-        this.result = faker.fakeQuery(this.query, this.count).join(this.delimiter)
+        this.result = faker.fake(this.query, this.count).join(this.delimiter)
       } else {
-        let [min, max] = this.query.split(',').map(s => parseInt(s, 10))
+        let [min, max, inc = 1] = this.query.split(',').map(s => parseInt(s, 10))
         if (typeof max === 'undefined') {
           max = min
           min = 0
@@ -87,7 +87,7 @@ export default {
         if (this.isNumRandom) {
           this.result = faker.randomNumber(min, max, this.count).join(this.delimiter)
         } else {
-          this.result = faker.range(min, max).join(this.delimiter)
+          this.result = faker.range(min, max, inc).join(this.delimiter)
         }
       }
     }
