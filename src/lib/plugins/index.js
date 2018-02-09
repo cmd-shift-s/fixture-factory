@@ -1,3 +1,4 @@
 
-export * from './pick'
+export * from './list'
 export * from './date'
+export * from './string'

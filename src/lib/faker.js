@@ -110,7 +110,7 @@ function parseQuery(query) {
  * fake query에서 plugin을 찾아서 적용한 함수를 리턴한다.
  *
  * @param {string} query
- * @return {Function}
+ * @return {function}
  */
 function parseFake(query) {
 
