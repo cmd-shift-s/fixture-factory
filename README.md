@@ -12,8 +12,6 @@ Open https://gongzza.github.io/fixture-factory
 
 ## Query
 
-Type이 Fake일 경우의 설명입니다.
-
 기본적으로 [faker.fake](https://github.com/marak/Faker.js/#fakerfake)함수를 기반으로 동작합니다.
 
 Example:
