@@ -1,34 +1,28 @@
 import * as utils from '@/lib/utils'
 
 /**
- * start부터 end 까지 inc 씩 증가 시킨 값들을 리턴한다.
+ * 시작값으로 부터 차례대로 증가값을 더한 값을 리턴한다.
  *
- * @param {Array} args
- * @return {string}
+ * @example num.range(start, length, inc)
+ * @return {Array}
  */
 export function range(args) {
-  let [start, end, inc = 1] = utils.splitNumbers(args)
-
-  if(!end) {
-    end = start
+  let [start, length, inc = 1] = utils.splitNumbers(args)
+  if (!length) {
+    length = start
     start = 1
   }
 
-  const [min, max] = utils.minmax(start, end)
-
-  let i = min - inc
-  const length = Math.abs(max - min)/inc + 1
-  const arr = Array.from({length}, () => i += inc)
-
-  if (start > end) arr.reverse()
-  return arr.join(',')
+  // 시작값 부터 시작하기 위해서 빼고 시작
+  start -= inc
+  return Array.from({length}, () => start += inc).join(',')
 }
 
 /**
  * min과 max 사이의 숫자를 랜덤하게
  * cnt 개수 만큼 배열을 생성해서 리턴한다.
  *
- * @param {Array} args
+ * @example num.random(min, max)
  * @return {string}
  */
 export function random(args) {
