@@ -2,6 +2,9 @@ import faker from 'faker'
 import * as plugins from './plugins'
 import * as utils from './utils'
 
+// install addons
+require('./extensions')(faker)
+
 /**
  * 파라메터로 넘어온 query를 cnt 개수 만큼의 fake 결과를 리턴한다.
  *
@@ -77,6 +80,9 @@ function parseQuery(query) {
     if (start !== -1) {
       // 다음 fake 사이의 문자열 저장
       result.push(query.substring(end, start))
+    } else if (start === -1 && end < query.length) {
+      // 남은 문자열 저장
+      result.push(query.substring(end))
     }
 
     end = query.indexOf('}}', end)
@@ -112,10 +118,10 @@ function parseFake(query) {
     // string
     const str = fakeStr.replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
     fn = () => str
-  // } else if (/^\[.*\]$/.test(fakeStr)) {
-  //   // array
-  //   const arr = JSON.parse(fakeStr)
-  //   fn = () => arr
+  } else if (/^\[.*\]$/.test(fakeStr)) {
+    // array
+    const arr = JSON.parse(fakeStr)
+    fn = () => arr
   } else {
     // fake method
     fn = () => faker.fake(fakeMethod)

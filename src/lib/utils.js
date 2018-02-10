@@ -8,3 +8,9 @@ export function minmax(a, b) {
     Math.max(a, b)
   ]
 }
+
+export function splitNumbers(args, delim = ',') {
+  return typeof args === 'string'
+    ? args.split(delim).map(n => parseInt(n.trim(), 10))
+    : [args]
+}
