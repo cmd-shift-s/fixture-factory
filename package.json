@@ -1,7 +1,7 @@
 {
   "name": "fixture-factory",
   "description": "Factory for faker.js fixture generator",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "author": "gongzza <gz.us.to@gmail.com>",
   "license": "MIT",
   "private": true,
