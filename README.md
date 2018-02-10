@@ -4,35 +4,13 @@
 
 Open https://gongzza.github.io/fixture-factory
 
-# Usage
+## Usage
 
-1. Type을 선택하세요.
-1. Query을 입력하세요.(Type에 따라서 입력하는 형식이 달라집니다.)
+1. Query을 입력하세요.
 1. Query에 포커싱 된 상태로 Enter를 누르거나 Generate버튼을 클릭합니다.
 1. Result를 복사합니다.
 
-## Type
-
-선택에 따라서 Query 입력 형식이 달라집니다.
-
-#### Number Random
-숫자를 랜덤하게 표시합니다.
-
-- Query: number[, number]
-- number를 하나만 입력할 경우 숫자 범위가 양수는 0부터, 음수는 -1부터 입니다.
-
-#### Number
-
-숫자를 순차적으로 표시합니다.
-
-- Query: number[, number]
-- number를 하나만 입력할 경우 음수와 양수 모두 0부터 시작합니다.
-
-#### Fake
-
-입력한 포멧에 맞춰서 표현해 줍니다. 자세한 사항은 다음 Query Tab에서 확인해 주세요.
-
-### Query
+## Query
 
 Type이 Fake일 경우의 설명입니다.
 
@@ -42,6 +20,50 @@ Example:
 
 - Query: {{lorem.word}}
 - Result: ipsum
+
+### Extensions
+
+**{{num.range(start, end, inc)}}**
+
+start 부터 시작해서 end 까지 순차적으로 inc 씩 증가시킨 값을 리턴합니다.
+
+start만 입력할 경우 1부터 시작합니다.
+
+Example:
+
+- Query: {{num.range(10)}}
+- Count: 1
+- Result: 1,2,3,4,5,6,7,8,9,10
+
+Example:
+
+- Query: {{num.range(-10, 10)}}
+- Count: 1
+- Result: -10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10
+
+Example:
+
+- Query: {{num.range(-10, 10, 2)}}
+- Count: 1
+- Result: -10,-8,-6,-4,-2,0,2,4,6,8,10
+
+**{{num.random(min, max)}}**
+
+min부터 max사이의 랜덤한 숫자를 리턴합니다.
+
+min만 입력할 경우 0부터 시작합니다.
+
+Example:
+
+- Query: {{num.random(10)}}
+- Count: 3
+- Result: 10, 0, 1
+
+Example:
+
+- Query: {{num.random(-10, 10)}}
+- Count: 3
+- Result: -10, 0, 10
 
 ### Plugins
 
