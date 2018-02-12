@@ -21,11 +21,13 @@ Example:
 
 ### Extensions
 
-**{{num.range(start, end, inc)}}**
+**{{num.range(start, count, inc)}}**
 
-start 부터 시작해서 end 까지 순차적으로 inc 씩 증가시킨 값을 리턴합니다.
+start 값부터 시작해서 count 만큼 inc 씩 증가시킨 리스트를 리턴합니다.
 
 start만 입력할 경우 1부터 시작합니다.
+
+inc 기본 값은 1 입니다.
 
 Example:
 
@@ -37,13 +39,13 @@ Example:
 
 - Query: {{num.range(-10, 10)}}
 - Count: 1
-- Result: -10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10
+- Result: -10,-9,-8,-7,-6,-5,-4,-3,-2,-1
 
 Example:
 
 - Query: {{num.range(-10, 10, 2)}}
 - Count: 1
-- Result: -10,-8,-6,-4,-2,0,2,4,6,8,10
+- Result: -10,-8,-6,-4,-2,0,2,4,6,8
 
 **{{num.random(min, max)}}**
 
