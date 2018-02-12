@@ -25,7 +25,7 @@
         <div class="field">
           <label class="label">Query</label>
           <div class="control">
-            <input class="input" id="query" v-model="query">
+            <input class="input" id="query" ref="query" v-model="query" required>
           </div>
         </div>
         <div class="field">
@@ -50,10 +50,13 @@ export default {
     result: '',
     delimiter: ', '
   }),
+  mounted() {
+    this.$refs.query.focus()
+  },
   methods: {
     generate() {
       if (this.query.trim().length == 0) {
-        this.$el.querySelector('#query').focus()
+        this.$refs.query.focus()
         return
       }
 
