@@ -57,11 +57,12 @@ export default {
         return
       }
 
-      this.result = faker.fake(this.query, this.count).join(this.delimiter)
+      try {
+        this.result = faker.fake(this.query, this.count).join(this.delimiter)
+      } catch(e) {
+        this.result = e.message || e
+      }
     }
   }
 }
 </script>
-
-<style lang="css">
-</style>

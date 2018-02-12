@@ -17,37 +17,30 @@ export function makeMocks(query, cnt) {
 }
 
 /**
- * min과 max 사이의 숫자를 랜덤하게
- * cnt 개수 만큼 배열을 생성해서 리턴한다.
- *
- * @param {number} min - minimum
- * @param {number} max - maximum
- * @param {number} cnt - Array length
- * @return {Array}
- */
-export function randomNumber(min, max, cnt) {
-  return Array.from({length: cnt}, () => utils.getRandomArbitrary(min, max))
-}
-
-/**
  * Query를 파싱해서 cnt 개수 만큼의 결과를 배열로 리턴한다.
  *
  * @param {string} query - Fake query
- * @param {number} cnt - Array length
+ * @param {number} count - Array length
  * @return {Array}
  */
-export function fake(query, cnt) {
+export function fake(query, count) {
 
+  // @exception Invalid plugin
   const result = parseQuery(query)
-  if (!result) return [query]
 
-  return Array.from({length: cnt}, () => result.map(q => typeof q === 'function'?q():q).join(''))
+  const fn = result
+    // @exception Invalid module or method
+    ? () => result.map(q => typeof q === 'function'?q():q).join('')
+    : () => query // result가 없을 경우
+
+  return Array.from({length: count}, fn)
 }
 
 /**
  * query에서 fake query를 찾아서
  * 일반 문자열과 분리한 결과를 배열로 리턴한다.
  *
+ * @exception InvalidPlugin
  * @param {string} query
  * @return {Array}
  */
@@ -70,11 +63,11 @@ function parseQuery(query) {
   }
 
   while(start !== end) {
+    // {{ }} 는 제거된 fake query만 보냄
+    result.push(parseFake(query.substring(start + 2, end).trim()))
+
     // }} 까지 계산하기 위해서
     end += 2
-
-    // fake
-    result.push(parseFake(query.substring(start, end)))
 
     start = query.indexOf('{{', end)
     if (start !== -1) {
@@ -103,35 +96,34 @@ function parseFake(query) {
   let idx = query.indexOf('|')
   if (!~idx) {
     // plugin이 없을 경우 fake로 리턴
-    return () => faker.fake(query)
+    return () => faker.fake(`{{${query}}}`)
   }
 
   // fake string과 plugin을 분리
-  const pluginMehotds = query.substring(idx, query.length - 2)
+  const pluginMehotds = query.substring(idx + 1)
 
-  // fake function
-  const fakeMethod = query.replace(pluginMehotds, '')
+  // fake method
+  const fakeMethod = query.substring(0, idx).trim()
 
   let fn
-  const fakeStr = fakeMethod.slice(2, -2).trim()
-  if (/^(\'|\").*(\'|\")$/.test(fakeStr)) {
+  if (/^(\'|\").*(\'|\")$/.test(fakeMethod)) {
     // string
-    const str = fakeStr.replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
+    const str = fakeMethod.replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
     fn = () => str
-  } else if (/^\[.*\]$/.test(fakeStr)) {
+  } else if (/^\[.*\]$/.test(fakeMethod)) {
     // array
-    const arr = JSON.parse(fakeStr)
+    const arr = JSON.parse(fakeMethod)
     fn = () => arr
   } else {
     // fake method
-    fn = () => faker.fake(fakeMethod)
+    fn = () => faker.fake(`{{${fakeMethod}}}`)
   }
 
   // 첫번째 문자가 '|' 라서 빈문자열로 된 첫번째 아이템을 버린다.
-  const matchers = pluginMehotds.split('|').slice(1)
+  const matchers = pluginMehotds.split('|')
   for (const matcher of matchers) {
     const method = /([^\(]+)/.exec(matcher)[1].trim()
-    const params = /\((.*)\)/g.exec(matcher)[1].split(',').map(str => {
+    const params = /\((.*)\)/.exec(matcher)[1].split(',').map(str => {
       // trim과 앞/뒤 \'\" 제거
       const s = str.trim().replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
       if (/\d+/.test(s)) {
@@ -148,6 +140,11 @@ function parseFake(query) {
         return s
       }
     })
+
+    // 알 수 없는 method일 경우 예외 발생
+    if (!plugins.hasOwnProperty(method)) {
+      throw new Error(`Invalid plugin: ${method}`)
+    }
     fn = plugins[method](fn, ...params)
   }
 
