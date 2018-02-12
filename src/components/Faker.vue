@@ -62,8 +62,10 @@ export default {
 
       try {
         this.result = faker.fake(this.query, this.count).join(this.delimiter)
+        gtag('event', 'generate', {'event_category': 'generate_success', 'event_label': this.query, 'value': 1})
       } catch(e) {
         this.result = e.message || e
+        gtag('event', this.query, {'event_category': 'generate_error', 'event_label': this.result})
       }
     }
   }

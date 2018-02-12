@@ -2,6 +2,8 @@ var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
+var isProduction = process.env.NODE_ENV === 'production'
+
 module.exports = {
   entry: './src/main.js',
   output: {
@@ -62,7 +64,7 @@ module.exports = {
   ]
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (isProduction) {
   module.exports.devtool = '#source-map'
   module.exports.output.filename = 'js/build.js?[chunkhash]'
   // http://vue-loader.vuejs.org/en/workflow/production.html
