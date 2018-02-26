@@ -49,7 +49,7 @@ function parseQuery(query) {
   let start = query.search('{{')
   let end = query.search('}}')
 
-  if (!~start && !~end) {
+  if (!~start || !~end) {
     return
   }
 
@@ -62,7 +62,7 @@ function parseQuery(query) {
     result.push(query.substr(0, start))
   }
 
-  while(start !== end) {
+  while(~end) {
     // {{ }} 는 제거된 fake query만 보냄
     result.push(parseFake(query.substring(start + 2, end).trim()))
 
@@ -70,15 +70,21 @@ function parseQuery(query) {
     end += 2
 
     start = query.indexOf('{{', end)
-    if (start !== -1) {
+    if (start !== -1 && start !== end) {
       // 다음 fake 사이의 문자열 저장
       result.push(query.substring(end, start))
     } else if (start === -1 && end < query.length) {
-      // 남은 문자열 저장
+      // 더 이상 시작 값이 없을 경우 남은 문자열 저장
       result.push(query.substring(end))
+      break;
     }
 
     end = query.indexOf('}}', end)
+  }
+
+  // 시작 값이 있는데 종료 된 경우 남은 문자열 저장
+  if (~start) {
+    result.push(query.substring(start))
   }
 
   return result
