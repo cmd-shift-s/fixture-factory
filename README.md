@@ -4,12 +4,6 @@
 
 Open https://gongzza.github.io/fixture-factory
 
-## Usage
-
-1. Query을 입력하세요.
-1. Query에 포커싱 된 상태로 Enter를 누르거나 Generate버튼을 클릭합니다.
-1. Result를 복사합니다.
-
 ## Query
 
 기본적으로 [faker.fake](https://github.com/marak/Faker.js/#fakerfake)함수를 기반으로 동작합니다.
