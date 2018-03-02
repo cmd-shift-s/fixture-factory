@@ -120,13 +120,6 @@ Example
 - Query: {{lorem.words|replace(/\s/g, '')}}
 - Result: doloremporroqui, consecteturdolorratione, sitcorruptirerum
 
-### Others
-
-Count와 Delimiter는 표시되면 필수로 입력해야 합니다.
-
-- Count: 아이템 개수
-- Delimiter: 아이템 구분 문자
-
 ## Contributor
 
 언제나 환영입니다.
