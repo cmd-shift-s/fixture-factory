@@ -1,8 +1,10 @@
 # Fixture Factory
 
-> Generate massive amounts of fixtures based on predefined model using [faker.js](https://github.com/marak/Faker.js) methods.
+[Site](https://gongzza.github.io/fixture-factory/)
 
-Open https://gongzza.github.io/fixture-factory
+알고리즘 문제를 풀다보면, 알고리즘을 검증하기 위해서 다양한 경우의 데이터들이 필요합니다. 하지만, 필요한 데이터가 특정 규칙에 따른 배열일 경우 만들기가 번거롭고 귀찮기도 합니다.
+
+다행히 다양한 형식의 데이터를 랜덤하게 만들어주는 [faker.js](https://github.com/Marak/faker.js)가 있어서, 이걸 이용해서 다양한 케이스를 만들 수 있도록 Extensions와 Plugins을 만들어서 붙여 보았습니다.
 
 ## Query
 
