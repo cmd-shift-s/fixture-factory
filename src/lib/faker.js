@@ -91,6 +91,38 @@ function parseQuery(query) {
 }
 
 /**
+ * fake method를 파싱해서 함수를 리턴한다.
+ *
+ * - 문자열: 문자열을 그대로 리턴한다.
+ * - 배열: 아이템을 순차적으로 하나씩 리턴한다.
+ * - 나머지는 fake함수를 호출한다.
+ *
+ * @param {string} method
+ * @return {function}
+ */
+function parseFakeMethod(method) {
+  let fn
+  if (/^(\'|\").*(\'|\")$/.test(method)) {
+    // string
+    const str = method.replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
+    fn = () => str
+  } else if (/^\[.*\]$/.test(method)) {
+    // array
+    // 하나씩 순차적으로 리턴한다.
+    let i = 0;
+    const arr = JSON.parse(method)
+    fn = () => {
+      if (i >= arr.length) i = 0
+      return arr[i++]
+    }
+  } else {
+    // fake method
+    fn = () => faker.fake(`{{${method}}}`)
+  }
+  return fn
+}
+
+/**
  * fake query에서 plugin을 찾아서 적용한 함수를 리턴한다.
  *
  * @param {string} query
@@ -102,30 +134,15 @@ function parseFake(query) {
   let idx = query.indexOf('|')
   if (!~idx) {
     // plugin이 없을 경우 fake로 리턴
-    return () => faker.fake(`{{${query}}}`)
+    return parseFakeMethod(query) // () => faker.fake(`{{${query}}}`)
   }
 
   // fake string과 plugin을 분리
   const pluginMehotds = query.substring(idx + 1)
 
   // fake method
-  const fakeMethod = query.substring(0, idx).trim()
+  let fn = parseFakeMethod(query.substring(0, idx).trim())
 
-  let fn
-  if (/^(\'|\").*(\'|\")$/.test(fakeMethod)) {
-    // string
-    const str = fakeMethod.replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
-    fn = () => str
-  } else if (/^\[.*\]$/.test(fakeMethod)) {
-    // array
-    const arr = JSON.parse(fakeMethod)
-    fn = () => arr
-  } else {
-    // fake method
-    fn = () => faker.fake(`{{${fakeMethod}}}`)
-  }
-
-  // 첫번째 문자가 '|' 라서 빈문자열로 된 첫번째 아이템을 버린다.
   const matchers = pluginMehotds.split('|')
   for (const matcher of matchers) {
     const method = /([^\(]+)/.exec(matcher)[1].trim()
@@ -140,7 +157,7 @@ function parseFake(query) {
         return JSON.parse(s)
       } else if (/^\/(.*?)\/[gimy]*$/.test(s)) {
         // Regexp
-        var match = s.match(new RegExp('^/(.*?)/([gimy]*)$'));
+        const match = s.match(new RegExp('^/(.*?)/([gimy]*)$'));
         return new RegExp(match[1], match[2]);
       } else {
         return s
