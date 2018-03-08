@@ -12,7 +12,7 @@
           <div class="field">
             <label class="label">Delimiter</label>
             <div class="control">
-              <input type="text" class="input" v-model="delimiter" required>
+              <input type="text" class="input" v-model="delimiter">
             </div>
           </div>
           <div class="field">
@@ -42,16 +42,30 @@
 <script>
 import * as faker from '@/lib/faker'
 
+// new line 검증 정규화 표현식
+const regNewLine = /(\\r\\n|\\n|<br\/?>)/g
+
 export default {
   name: 'faker',
   data: () => ({
     query: '',
     count: 3,
     result: '',
-    delimiter: ', '
+    delimiter: ', ' // 구분자
   }),
   mounted() {
     this.$refs.query.focus()
+  },
+  computed: {
+    /**
+     * 구분자에 개행문자가 포함 되어 있을 경우
+     * textarea에서 개행되어 표시되도록 수정해서 리턴한다.
+     */
+    replacedDelimiter() {
+      return regNewLine.test(this.delimiter)
+        ? this.delimiter.replace(regNewLine, '\n')
+        : this.delimiter
+    }
   },
   methods: {
     generate() {
@@ -61,7 +75,7 @@ export default {
       }
 
       try {
-        this.result = faker.fake(this.query, this.count).join(this.delimiter)
+        this.result = faker.fake(this.query, this.count).join(this.replacedDelimiter)
         gtag('event', 'generate', {'event_category': 'generate_success', 'event_label': this.query, 'value': 1})
       } catch(e) {
         this.result = e.message || e
