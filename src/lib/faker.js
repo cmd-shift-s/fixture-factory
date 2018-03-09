@@ -12,18 +12,38 @@ require('./extensions')(faker)
  * @param {number} count - Array length
  * @return {Array}
  */
-export function fake(query, count) {
+ export function fake(query, count) {
 
-  // @exception Invalid plugin
-  const result = parseQuery(query)
+   // @exception Invalid plugin
+   const result = parseQuery(query)
 
-  const fn = result
-    // @exception Invalid module or method
-    ? () => result.map(q => typeof q === 'function'?q():q).join('')
-    : () => query // result가 없을 경우
+   // @exception Invalid module or method
+   const fn = () => result.map(q => typeof q === 'function'?q():q).join('')
 
-  return Array.from({length: count}, fn)
-}
+   return Array.from({length: count}, fn)
+ }
+
+ // fake 결과들을 저장하고 참조하기 위해서 사용
+ const fakeResults = []
+
+ // fakeResults에서 결과를 리턴한다.
+ function getFakeResults(idx) {
+   if (idx > fakeResults.length || idx <= 0) return ''
+   return fakeResults[idx - 1]
+ }
+
+ /**
+  * 결과를 fakeResults에 저장하고 리턴하는 함수를 만든다.
+  *
+  * @param {boolean} isHide - true일 경우 빈 문자열을 리턴한다.
+  */
+ function saveFakeResult(fn, isHide) {
+   return () => {
+     const result = fn()
+     fakeResults.push(result)
+     return isHide ? '' : result
+   }
+ }
 
 /**
  * query에서 fake query를 찾아서
@@ -39,11 +59,17 @@ function parseQuery(query) {
   let end = query.search('}}')
 
   if (!~start || !~end) {
-    return
+    return [query]
   }
 
   // Query 파싱 결과를 저장
-  const result = []
+  const result = [
+    () => {
+      // fakeResults 초기화
+      fakeResults.length = 0
+      return ''
+    }
+  ]
 
   if (start !== 0) {
     // {{ 로 시작하지 않을 경우
@@ -89,27 +115,44 @@ function parseQuery(query) {
  * @param {string} method
  * @return {function}
  */
-function parseFakeMethod(method) {
-  let fn
-  if (/^(\'|\").*(\'|\")$/.test(method)) {
-    // string
-    const str = method.replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
-    fn = () => str
-  } else if (/^\[.*\]$/.test(method)) {
-    // array
-    // 하나씩 순차적으로 리턴한다.
-    let i = 0;
-    const arr = JSON.parse(method)
-    fn = () => {
-      if (i >= arr.length) i = 0
-      return arr[i++]
-    }
-  } else {
-    // fake method
-    fn = () => faker.fake(`{{${method}}}`)
-  }
-  return fn
-}
+ function parseFakeMethod(method) {
+   let fn
+   if (/^(\'|\").*(\'|\")$/.test(method)) {
+     // string
+     const str = method.replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
+     fn = () => str
+   } else if (/^\[.*\]$/.test(method)) {
+     // array
+     // 하나씩 순차적으로 리턴한다.
+     let i = 0;
+     const arr = JSON.parse(method)
+     fn = () => {
+       if (i >= arr.length) i = 0
+       return arr[i++]
+     }
+   } else if (/^\$\d+/.test(method)) {
+     // 앞의 fake 결과를 참조
+     const idx = parseInt(method.substr(1), 10)
+     fn = () => getFakeResults(idx)
+   } else {
+     // fake method
+     fn = () => {
+       // fake method parameter에서 fakeResults를 참조하는지 확인
+       let fakeMethod = method
+       if (/\$\d+/.test(method)) {
+         // 참조할 경우 method를 치환한다.
+         const matcher = /\$(\d+)/g
+         let match
+         while ((match = matcher.exec(method)) !== null) {
+           const idx = parseInt(match[1], 10)
+           fakeMethod = method.replace(match[0], getFakeResults(idx))
+         }
+       }
+       return faker.fake(`{{${fakeMethod}}}`)
+     }
+   }
+   return fn
+ }
 
 /**
  * fake query에서 plugin을 찾아서 적용한 함수를 리턴한다.
@@ -119,11 +162,19 @@ function parseFakeMethod(method) {
  */
 function parseFake(query) {
 
+  // - 로 시작 할 경우 화면에 보여주지 않음
+  // 하지만 fakeResults에는 저장
+  const isHide = query.startsWith('-')
+  if (isHide) {
+    // - 제거
+    query = query.substr(1).trim()
+  }
+
   // plugin이 있는지 검사
   let idx = query.indexOf('|')
   if (!~idx) {
     // plugin이 없을 경우 fake로 리턴
-    return parseFakeMethod(query) // () => faker.fake(`{{${query}}}`)
+    return saveFakeResult(parseFakeMethod(query), isHide) // () => faker.fake(`{{${query}}}`)
   }
 
   // fake string과 plugin을 분리
@@ -132,33 +183,46 @@ function parseFake(query) {
   // fake method
   let fn = parseFakeMethod(query.substring(0, idx).trim())
 
+  function parseParam(s) {
+    if (/^\d+$/.test(s)) {
+      // Number
+      return parseInt(s, 10)
+    } else if (/^\[.*\]$/.test(s)) {
+      // Array
+      return JSON.parse(s)
+    } else if (/^\/(.*?)\/[gimy]*$/.test(s)) {
+      // Regexp
+      const match = s.match(new RegExp('^/(.*?)/([gimy]*)$'));
+      return new RegExp(match[1], match[2]);
+    } else if (/^\$\d+/.test(s)) {
+      // 앞의 fake 결과를 참조
+      const idx = parseInt(s.substr(1), 10)
+      return getFakeResults(idx)
+    } else {
+      return s
+    }
+  }
+
   const matchers = pluginMehotds.split('|')
   for (const matcher of matchers) {
+    const prevFn = fn
     const method = /([^\(]+)/.exec(matcher)[1].trim()
-    const params = /\((.*)\)/.exec(matcher)[1].split(',').map(str => {
-      // trim과 앞/뒤 \'\" 제거
-      const s = str.trim().replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
-      if (/\d+/.test(s)) {
-        // Number
-        return parseInt(s, 10)
-      } else if (/^\[.*\]$/.test(s)) {
-        // Array
-        return JSON.parse(s)
-      } else if (/^\/(.*?)\/[gimy]*$/.test(s)) {
-        // Regexp
-        const match = s.match(new RegExp('^/(.*?)/([gimy]*)$'));
-        return new RegExp(match[1], match[2]);
-      } else {
-        return s
-      }
-    })
 
     // 알 수 없는 method일 경우 예외 발생
     if (!plugins.hasOwnProperty(method)) {
       throw new Error(`Invalid plugin: ${method}`)
     }
-    fn = plugins[method](fn, ...params)
+
+    fn = () => {
+      const params = /\((.*)\)/.exec(matcher)[1].split(',').map(str => {
+        // trim과 앞/뒤 \'\" 제거
+        const s = str.trim().replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
+        return parseParam(s)
+      })
+      return plugins[method](prevFn, ...params)
+    }
   }
 
-  return fn
+  // save fake result
+  return saveFakeResult(fn, isHide)
 }

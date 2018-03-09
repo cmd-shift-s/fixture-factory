@@ -7,11 +7,9 @@ import moment from 'moment'
  * @param {string} format
  */
 export function date(fn, format) {
-  return () => {
-    const str = fn()
-    const date = moment(new Date(str))
-    return date.isValid()
-      ? date.format(format)
-      : str
-  }
+  const str = fn()
+  const date = moment(new Date(str))
+  return date.isValid()
+    ? date.format(format)
+    : str
 }
