@@ -24,6 +24,25 @@ Example:
 - Query: {{lorem.word}}
 - Result: ipsum
 
+**{{-fake}}**
+
+Invisible 옵션으로 fake query 앞에 \`-\`를 붙이면 결과에 표시되지 않습니다.
+
+Example:
+
+- Query: !{{-lorem.word}}!
+- Result: !!
+
+**Result parameter**
+
+접두어 \`$\`를 이용해서 앞의 fake query 결과를 순서대로 접근 할 수 있습니다.
+
+Example:
+
+- Query: {{-[1, 2, 3]}}{{lorem.word|padStart(10, $1)}}
+- Count: 3
+- Result: omnis, 222et, 33quo
+
 ### Extensions
 
 **{{num.range(start, count, inc)}}**
@@ -111,7 +130,7 @@ Example:
 - Result: temporibus, 00000animi, 00delectus
 
 Example
-- Query: {{lorem.words|replace(/\s/g, '')}}
+- Query: {{lorem.words|replace(/\\s/g, '')}}
 - Result: doloremporroqui, consecteturdolorratione, sitcorruptirerum
 
 ## Contributor
