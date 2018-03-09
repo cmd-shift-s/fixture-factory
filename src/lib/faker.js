@@ -2,19 +2,8 @@ import faker from 'faker'
 import * as plugins from './plugins'
 import * as utils from './utils'
 
-// install addons
+// install extensions
 require('./extensions')(faker)
-
-/**
- * 파라메터로 넘어온 query를 cnt 개수 만큼의 fake 결과를 리턴한다.
- *
- * @param {string} query - Fake query
- * @param {number} cnt - Array length
- * @return {Array}
- */
-export function makeMocks(query, cnt) {
-  return Array.from({length: cnt}, () => faker.fake(query))
-}
 
 /**
  * Query를 파싱해서 cnt 개수 만큼의 결과를 배열로 리턴한다.
