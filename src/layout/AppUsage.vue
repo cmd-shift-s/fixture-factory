@@ -39,7 +39,7 @@ Example:
 
 Example:
 
-- Query: {{-[1, 2, 3]}}{{lorem.word|padStart(10, $1)}}
+- Query: {{-[1, 2, 3]}}{{lorem.word|padStart(5, $1)}}
 - Count: 3
 - Result: omnis, 222et, 33quo
 
