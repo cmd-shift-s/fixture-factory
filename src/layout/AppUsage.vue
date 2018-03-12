@@ -1,7 +1,7 @@
 <template lang="html">
   <section class="section">
     <div class="container">
-      <div class="content" v-html="readme">
+      <div class="content" v-html="usage">
       </div>
     </div>
   </section>
@@ -13,7 +13,7 @@ const md = require('markdown-it')()
 export default {
   name: 'app-usage',
   computed: {
-    readme() {
+    usage() {
       return md.render(`
 ## Query
 
