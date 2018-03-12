@@ -203,6 +203,23 @@ function parseFake(query) {
     }
   }
 
+  function lazyCall(fn, method, params) {
+    let plugin
+
+    return () => {
+      if (!plugin) {
+        const parsedParams = params.map(param => {
+          // trim과 앞/뒤 \'\" 제거
+          const p = param.trim().replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
+          return parseParam(p)
+        })
+
+        plugin = plugins[method](fn, ...parsedParams)
+      }
+      return plugin()
+    }
+  }
+
   const matchers = pluginMehotds.split('|')
   for (const matcher of matchers) {
     const prevFn = fn
@@ -213,14 +230,9 @@ function parseFake(query) {
       throw new Error(`Invalid plugin: ${method}`)
     }
 
-    fn = () => {
-      const params = /\((.*)\)/.exec(matcher)[1].split(',').map(str => {
-        // trim과 앞/뒤 \'\" 제거
-        const s = str.trim().replace(/^[\'\"]/, '').replace(/[\'\"]$/, '')
-        return parseParam(s)
-      })
-      return plugins[method](prevFn, ...params)
-    }
+    const params = /\((.*)\)/.exec(matcher)[1].split(',')
+
+    fn = lazyCall(fn, method, params)
   }
 
   // save fake result

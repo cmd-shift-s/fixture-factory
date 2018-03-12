@@ -15,7 +15,7 @@ const methods = [
 let str = {}
 
 for (const method of methods) {
-  str[method] = (fn, ...args) => String.prototype[method].apply(fn(), args)
+  str[method] = (fn, ...args) => () => String.prototype[method].apply(fn(), args)
 }
 
 module.exports = str
